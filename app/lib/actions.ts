@@ -15,7 +15,7 @@ const FormSchema = z.object({
   date: z.string(),
 });
 
-/* CREATE INVOICE **/
+/* 1) CREATE INVOICE **/
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
 
 export async function createInvoices(formData: FormData) {
@@ -34,14 +34,13 @@ export async function createInvoices(formData: FormData) {
     `;
   } catch (error) {
     console.error(error);
-    return { message: 'Database Error: Failed to Create Invoice.', };
   }
 
   revalidatePath('/dashboard/invoices'); // Clear's Next.js's cache so fresh data can be shown
   redirect('/dashboard/invoices');
 }
 
-/* UPDATE INVOICE **/
+/* 2) UPDATE INVOICE **/
 const UpdateInvoice = FormSchema.omit({ id: true, date: true });
 
 export async function updateInvoice(id: string, formData: FormData) {
@@ -61,20 +60,19 @@ export async function updateInvoice(id: string, formData: FormData) {
     `;
   } catch (error) {
     console.error(error);
-    return { message: 'Database Error: Failed to Update Invoice.', };
   }
 
   revalidatePath('/dashboard/invoices');
   redirect('/dashboard/invoices');
 }
 
+/* 3) DELETE INVOICE **/
 export async function deleteInvoice(id: string) {
   try {
     await sql `DELETE FROM invoices WHERE id = ${id}`;
   } catch (error) {
     console.error(error);
-    return { message: 'Database Error: Failed to Delete Invoice.', };
-  }
+   }
   
   revalidatePath('/dashboard/invoices');
 }
